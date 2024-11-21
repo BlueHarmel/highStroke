@@ -23,6 +23,15 @@ repositories {
     mavenCentral()
 }
 
+def envProps = new Properties()
+file(".env").withInputStream { envProps.load(it) }
+
+processResources {
+    filesMatching('application.yml') {
+        expand(envProps)
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -32,6 +41,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // 쿼리 파라미터를 로그로 남기는 라이브러리
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 tasks.named('test') {
