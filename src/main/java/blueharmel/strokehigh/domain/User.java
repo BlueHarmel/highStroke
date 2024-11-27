@@ -48,30 +48,18 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_type")
     private UserType userType;
 
-    @OneToMany(mappedBy = "team1Player1")
-    List<Match> team1Player1Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team1Player2")
-    List<Match> team1Player2Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team2Player1")
-    List<Match> team2Player1Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team2Player2")
-    List<Match> team2Player2Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "judge")
-    List<Match> judgeMatches = new ArrayList<>();
-
     @OneToMany(mappedBy = "user")
+    private List<MatchParticipation> participations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Rivalry> rivalries = new ArrayList<>();
 
-    @OneToMany(mappedBy = "rival")
+    @OneToMany(mappedBy = "rival", cascade = CascadeType.ALL)
     List<Rivalry> rivaledBy = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private MMR mmr;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Leaderboard> leaderboards = new ArrayList<>();
 }
