@@ -19,7 +19,7 @@ public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;
+    private Long id;
 
     @Column(length = 15)
     private String username;
@@ -35,43 +35,31 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_state")
-    private UserState userState;
+    private UserState userState; // 유저 상태 [ACTIVE, INACTIVE, BANNED]
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type")
-    private SocialType socialType;
+    private SocialType socialType; // 소셜 로그인 종류 [NAVER,GOOGLE,KAKAO]
 
     @Column(name = "social_id", length = 50)
     private String socialId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    private UserType userType;
-
-    @OneToMany(mappedBy = "team1Player1")
-    List<Match> team1Player1Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team1Player2")
-    List<Match> team1Player2Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team2Player1")
-    List<Match> team2Player1Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "team2Player2")
-    List<Match> team2Player2Matches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "judge")
-    List<Match> judgeMatches = new ArrayList<>();
+    private UserType userType; // 유저 종류 [ADMIN, COMMON]
 
     @OneToMany(mappedBy = "user")
+    private List<MatchParticipation> participations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Rivalry> rivalries = new ArrayList<>();
 
-    @OneToMany(mappedBy = "rival")
+    @OneToMany(mappedBy = "rival", cascade = CascadeType.ALL)
     List<Rivalry> rivaledBy = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private MMR mmr;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Leaderboard> leaderboards = new ArrayList<>();
 }

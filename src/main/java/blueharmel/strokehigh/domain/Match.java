@@ -6,6 +6,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "matches")
 @Getter
@@ -15,38 +18,19 @@ public class Match extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id")
-    private Long matchId;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team1_player1_id")
-    private User team1Player1;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team1_player2_id")
-    private User team1Player2;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team2_player1_id")
-    private User team2Player1;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team2_player2_id")
-    private User team2Player2;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "judge_id")
-    private User judge;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "match_type")
+    private MatchType matchType; // 매치 종류 [SINGLE, DOUBLE]
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "court_id")
     private Court court;
 
-    @Column(name = "team1_score")
-    private int team1Score;
+    @OneToMany(mappedBy = "match")
+    private List<MatchParticipation> participations = new ArrayList<>();
 
-    @Column(name = "team2_score")
-    private int team2Score;
-
-    @Enumerated(EnumType.STRING)
-    private MatchType matchType;
+    @OneToMany(mappedBy = "match")
+    private List<SetScore> setScores = new ArrayList<>();
 }
