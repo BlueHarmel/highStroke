@@ -13,7 +13,7 @@ public class Court {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "court_id")
-    private Long courtId;
+    private Long id;
 
     @Column(length = 30)
     private String name;

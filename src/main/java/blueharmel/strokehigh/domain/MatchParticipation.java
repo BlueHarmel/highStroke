@@ -12,18 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MatchParticipation extends BaseTimeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_participation_id")
-    private Long matchParticipationId;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "player_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private Match match;
 
     @Enumerated(EnumType.STRING)
-    private ParticipationType participationType;
+    private ParticipationType participationType; // 참여 역할 [JUDGE,TEAM_A,TEAM_B]
 }

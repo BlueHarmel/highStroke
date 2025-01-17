@@ -1,16 +1,18 @@
 package blueharmel.strokehigh.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "set_scores")
 public class SetScore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "set_id")
-    private Long setId;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private Match match;
 
@@ -23,5 +25,4 @@ public class SetScore {
     @Column(name = "team_b_score")
     private Integer teamBScore;
 
-    // 생성자, getter, setter 등 생략
 }

@@ -18,11 +18,11 @@ public class Match extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "match_id")
-    private Long matchId;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "match_type")
-    private MatchType matchType;
+    private MatchType matchType; // 매치 종류 [SINGLE, DOUBLE]
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "court_id")
