@@ -2,12 +2,12 @@ spring:
   config:
     import: optional:file:.env[.properties]
   application:
-    name: ${DB_NAME}
+    name: ${TEST_DB_NAME}
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PW}
-    driver-class-name: ${DB_CLASSNAME}
+    url: ${TEST_DB_URL}
+    username: ${TEST_DB_USERNAME}
+    password: ${TEST_DB_PW}
+    driver-class-name: ${TEST_DB_CLASSNAME}
 
   jpa:
     hibernate:
