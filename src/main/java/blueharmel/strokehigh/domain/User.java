@@ -5,6 +5,7 @@ import blueharmel.strokehigh.domain.enums.UserState;
 import blueharmel.strokehigh.domain.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,26 +16,27 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User extends BaseTimeEntity {
+public class User extends DeletedTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 15)
+    @Column(length = 15, nullable = false)
     private String username;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String nickname;
 
-    @Column(length = 50)
+    @Column(length = 50, nullable = false)
     private String email;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_state")
+    @ColumnDefault("'ACTIVE'")
+    @Column(name = "user_state", nullable = false)
     private UserState userState; // 유저 상태 [ACTIVE, INACTIVE, BANNED]
 
     @Enumerated(EnumType.STRING)
@@ -45,7 +47,8 @@ public class User extends BaseTimeEntity {
     private String socialId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_type")
+    @ColumnDefault("'COMMON'")
+    @Column(name = "user_type", nullable = false)
     private UserType userType; // 유저 종류 [ADMIN, COMMON]
 
     @OneToMany(mappedBy = "user")
@@ -62,4 +65,13 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Leaderboard> leaderboards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<CourtReview> courtReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 }

@@ -12,17 +12,16 @@ public class SetScore {
     @Column(name = "set_id")
     private Long id;
 
+    @Column(name = "set_number", nullable = false)
+    private Integer setNumber;
+
+    @Column(name = "team_a_score", nullable = false)
+    private Integer teamAScore;
+
+    @Column(name = "team_b_score", nullable = false)
+    private Integer teamBScore;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "match_id")
     private Match match;
-
-    @Column(name = "set_number")
-    private Integer setNumber;
-
-    @Column(name = "team_a_score")
-    private Integer teamAScore;
-
-    @Column(name = "team_b_score")
-    private Integer teamBScore;
-
 }

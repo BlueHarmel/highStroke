@@ -1,5 +1,6 @@
 package blueharmel.strokehigh.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
@@ -7,7 +8,9 @@ import lombok.Getter;
 @Getter
 public class Address {
 
+    @Column(length = 30, nullable = false)
     private String city;
+    @Column(length = 30, nullable = false)
     private String street;
 
     protected Address(){
