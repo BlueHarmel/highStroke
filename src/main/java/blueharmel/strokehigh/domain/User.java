@@ -5,7 +5,6 @@ import blueharmel.strokehigh.domain.enums.UserState;
 import blueharmel.strokehigh.domain.enums.UserType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +34,9 @@ public class User extends DeletedTimeEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'ACTIVE'")
     @Column(name = "user_state", nullable = false)
-    private UserState userState; // 유저 상태 [ACTIVE, INACTIVE, BANNED]
+    @Builder.Default
+    private UserState userState = UserState.ACTIVE; // 유저 상태 [ACTIVE, INACTIVE, BANNED]
 
     @Enumerated(EnumType.STRING)
     @Column(name = "social_type")
@@ -47,9 +46,9 @@ public class User extends DeletedTimeEntity {
     private String socialId;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'COMMON'")
     @Column(name = "user_type", nullable = false)
-    private UserType userType; // 유저 종류 [ADMIN, COMMON]
+    @Builder.Default
+    private UserType userType = UserType.COMMON; // 유저 종류 [ADMIN, COMMON]
 
     @OneToMany(mappedBy = "user")
     private List<MatchParticipation> participations = new ArrayList<>();
