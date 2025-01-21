@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -14,32 +15,35 @@ import java.math.BigDecimal;
 })
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Leaderboard {
+public class Leaderboard extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "leaderboard_id")
     private Long id;
 
-    @Column(name = "season")
+    @Column(name = "season", nullable = false)
     private int season;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column(name = "win_count")
+    @ColumnDefault("0")
+    @Column(name = "win_count", nullable = false)
     private int winCount;
 
-    @Column(name = "lose_count")
+    @ColumnDefault("0")
+    @Column(name = "lose_count", nullable = false)
     private int loseCount;
 
-    @Column(name = "win_streak")
+    @ColumnDefault("0")
+    @Column(name = "win_streak", nullable = false)
     private int winStreak;
 
-    @Column(name = "win_rate", precision = 5, scale = 2)
+    @ColumnDefault("0")
+    @Column(name = "win_rate", precision = 5, scale = 2, nullable = false)
     private BigDecimal winRate;
 
     @Column(name = "player_rank")
     private int playerRank;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

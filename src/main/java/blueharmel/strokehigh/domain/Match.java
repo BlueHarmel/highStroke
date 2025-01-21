@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class Match extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "match_type")
+    @Column(name = "match_type", nullable = false)
     private MatchType matchType; // 매치 종류 [SINGLE, DOUBLE]
 
     @ManyToOne(fetch = FetchType.LAZY)
