@@ -17,6 +17,7 @@ public class UserService {
     //회원 가입
     @Transactional
     public Long join(User user){
+        user.validate();
         validateDuplicateUser(user);//중복 회원 검증
         userRepository.save(user);
         return user.getId();
