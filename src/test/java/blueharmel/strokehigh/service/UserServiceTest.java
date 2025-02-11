@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,5 +83,51 @@ class UserServiceTest {
         //then
         assertEquals(0, participations.size()); // 아직 참여한 매치 없음
         logger.info("participations = " + participations);
+    }
+
+    @Test
+    public void 회원_탈퇴() throws Exception {
+        //given
+        User user = User.createUser("홍길동","kim","dldjtjr@naver.com", "1234");
+        userRepository.save(user);
+        //when
+        userService.softDeleteUser(user.getId());
+        //then
+        assertEquals(UserState.INACTIVE,user.getUserState(),"탈퇴된 유저는 비활성화 되어야 한다.");
+        logger.info("deletedAt = " + user.getDeletedAt());
+    }
+
+    @Test
+    public void 회원_삭제() throws Exception {
+        //given
+        User user = User.createUser("홍길동","kim","dldjtjr@naver.com", "1234");
+        userRepository.save(user);
+        em.flush(); // DB 반영
+        em.clear(); // 영속성 컨텍스트 초기화
+        //when
+        List<Long> userIds = new ArrayList<>();
+        userIds.add(user.getId());
+        userService.hardDeleteUsers(userIds);
+        em.flush(); // DB 반영
+        em.clear(); // 영속성 컨텍스트 초기화
+        //then
+        assertNull(userService.findOne(user.getId()),"삭제된 유저는 찾을 수 없어야 한다.");
+    }
+    
+    @Test
+    public void 탈퇴후_30일이_지난유저_삭제() throws Exception {
+        //given
+        User user = User.createUser("홍길동","kim","dldjdtjr@naver.com","1234");
+        TestEntityHelper.setDeletedAtForTest(user, LocalDateTime.now().minusDays(40));
+        userRepository.save(user);
+        em.flush();
+        em.clear();
+        assertEquals(1,userService.findUsers().size());
+        //when
+        userService.deleteOldInactiveUsers();
+        em.flush();
+        em.clear();
+        //then
+        assertEquals(0,userService.findUsers().size());
     }
 }
