@@ -75,11 +75,11 @@ public class User extends DeletedTimeEntity {
     @Builder.Default
     private List<CourtReview> courtReviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Comment> comments = new ArrayList<>();
 
@@ -115,5 +115,26 @@ public class User extends DeletedTimeEntity {
         if (this.username == null || this.nickname == null || this.email == null || this.password == null) {
             throw new IllegalArgumentException("필수항목(username/nickname/email/password)이 입력되지 않았습니다.");
         }
+    }
+
+    // 회원 탈퇴
+    public void softDelete() {
+        super.delete();
+        this.userState = UserState.INACTIVE;
+    }
+
+    // 회원 삭제
+    public void hardDelete() {
+        comments.clear();
+        posts.clear();
+        courtReviews.clear();
+        leaderboards.clear();
+        participations.clear();
+
+        rivalries.clear();
+        rivaledBy.clear();
+
+        if(mmr != null)
+            mmr = null;
     }
 }
